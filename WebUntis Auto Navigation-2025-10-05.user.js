@@ -52,30 +52,28 @@
     let classSelected = false;
 
     // --- Configuration ---
-    const TARGET_CLASS = "4a"; // Change this to your target class
+    const TARGET_CLASS = "4a";
 
     // --- Step 1: Click the school link on main page ---
     async function tryClickSchoolLink() {
         if (schoolLinkClicked) return;
 
-        // Look for the exact link from your HTML
         const schoolLink = document.querySelector('a.visited-school[href="https://hektor.webuntis.com/WebUntis/?school=htl-shkoder"]');
 
         if (schoolLink) {
             schoolLinkClicked = true;
             console.log("✅ Found school link, clicking...");
-            await delay(500);
+            await delay(300);
             schoolLink.click();
             console.log("🖱️ School link clicked!");
             return true;
         }
 
-        // Fallback: try any link with htl-shkoder
         const fallbackLink = document.querySelector('a[href*="htl-shkoder"]');
         if (fallbackLink) {
             schoolLinkClicked = true;
             console.log("✅ Found fallback school link, clicking...");
-            await delay(500);
+            await delay(300);
             fallbackLink.click();
             console.log("🖱️ Fallback school link clicked!");
             return true;
@@ -89,7 +87,6 @@
     async function tryClickStundenplan() {
         if (stundenplanClicked) return;
 
-        // Only proceed if we're on the school page
         if (!location.href.includes("school=htl-shkoder")) {
             console.log("⏳ Waiting for school page...");
             return false;
@@ -97,7 +94,6 @@
 
         console.log("🔍 Looking for Stundenplan link...");
 
-        // Try multiple possible selectors for the Stundenplan link
         const selectors = [
             'a.un-navlink[href="#/basic/timetablePublic"]',
             'a[href="#/basic/timetablePublic"]',
@@ -110,14 +106,13 @@
             if (el) {
                 stundenplanClicked = true;
                 console.log("✅ Found Stundenplan link:", selector);
-                await delay(500);
+                await delay(300);
                 el.click();
                 console.log("🖱️ Stundenplan link clicked!");
 
-                // Wait for iframe to load, then try to select class
-                setTimeout(trySelectClassInIframe, 3000);
+                setTimeout(trySelectClassInIframe, 2000);
+                setTimeout(trySelectClassInIframe, 3500);
                 setTimeout(trySelectClassInIframe, 5000);
-                setTimeout(trySelectClassInIframe, 7000);
 
                 return true;
             }
@@ -126,8 +121,7 @@
         console.log("❌ Stundenplan link not found yet...");
         return false;
     }
-
-    // --- Step 3: Select class 4a (inside iframe) ---
+  // --- Step 3: Select class 4a (inside iframe) ---
     async function trySelectClassInIframe() {
         if (classSelected) return;
 
@@ -377,5 +371,4 @@
     }
 
     console.log("✨ Script initialized successfully");
-
 })();
