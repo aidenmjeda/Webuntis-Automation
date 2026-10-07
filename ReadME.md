@@ -6,7 +6,12 @@ A Tampermonkey userscript that automatically navigates to your class schedule on
 
 - Automatically clicks your school from the WebUntis homepage  
 - Navigates to the timetable (**Stundenplan**) page  
-- Selects your configured class (default: `4a`)  
+- Shows a **class picker** before selecting the class (default: `5a`)  
+  - Real class list loaded from WebUntis, grouped by grade, with search  
+  - Auto-continues with your remembered class after 6 seconds unless you pick another one  
+  - Your choice is remembered; turn off "Ask me every time" to skip the picker  
+  - A floating 🎓 button (bottom right) lets you switch class at any time  
+- Reliably opens the WebUntis class dropdown (it reacts to `mousedown`, not `click`)  
 - Fast and reliable navigation with intelligent retry logic
 
 ---
@@ -55,20 +60,18 @@ To customize the script for your school and class:
 
     Click the edit icon next to WebUntis Auto Navigation
 
-    Find this section near the top:
+    You normally don't need to edit anything: pick your class in the picker that
+appears on the timetable page, or click the 🎓 button in the bottom-right corner.
 
-// --- Configuration ---
-const TARGET_CLASS = "4a"; // Change this to your target class
+To change the default class used before you've picked one, edit this line near the top:
 
-    Change "4a" to your class name (e.g. "5b", "3a", etc.)
-
-    Save the script
+const DEFAULT_CLASS = "5a";
 
 School Configuration
 
 If your school differs from the default one, update the school link:
 
-const schoolLink = document.querySelector('a.visited-school[href="https://hektor.webuntis.com/WebUntis/?school=htl-shkoder"]');
+const SCHOOL = "htl-shkoder";
 
 Replace htl-shkoder with your school’s identifier from your WebUntis URL.
 🧠 How It Works
@@ -79,7 +82,7 @@ The script performs three main automated actions:
 
     Navigates to Timetable – clicks the “Stundenplan” menu
 
-    Selects your class – opens dropdown, searches, and selects your class
+    Asks for your class – then opens the dropdown, searches, and selects it
 
 All steps include intelligent retry logic to handle slow loading.
 🧰 Troubleshooting
@@ -103,7 +106,7 @@ Console Log Messages
 
 Common Fixes
 
-    Make sure the class name matches exactly (case-sensitive)
+    If the 🎓 button shows "retry", click it and pick the class again
 
     If your school page loads slowly, the script will retry automatically
 
@@ -140,7 +143,7 @@ Released under the MIT License – free to use, modify, and distribute.
 This is an unofficial userscript and not affiliated with Untis GmbH.
 Use at your own discretion — the script automates navigation only and does not access or modify sensitive data.
 
-Version: 2025-10-05
+Version: 2026-10-07
 Author: Aiden Mjeda
 
 
